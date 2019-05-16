@@ -238,7 +238,8 @@ body {
 #contentlogo {
     background-image: url(gfx/logo.png);
     background-size: 100% 100%;
-    margin-left: calc(50% - 134px);
+    margin-left: calc(50% - 250px);
+   
     width: 538px;
     height: 190px;
 }
