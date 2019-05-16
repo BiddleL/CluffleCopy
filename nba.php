@@ -160,7 +160,9 @@ body {
 <div class="noselect" id="navbar">
 	'.$header.'
 </div>
-
+<div id="video>
+<video data-html5-video="" preload="auto" src="blob:http://ripple.is/7b07d768-30ba-4921-8196-6db1e3708f21"><style class="clappr-style">[data-html5-video]{position:absolute;height:100%;width:100%;display:block}</style></video>
+</div>
 </div>
 <div class="noselect" id="footer">
 	<a div="opensource">Help</a>
