@@ -64,7 +64,7 @@ function frontpage() {
 				</div>
 				<div id="navbarlinks">
 					<a target=_blank href="http://www.reddit.com/u/'.$_SESSION["username"].'">+'.$_SESSION["username"].'</a>
-					<a href="#">Cmail</a>
+					<a href="nba.html">NBA Stream </a>
 					<a href="#">Images</a>
 				</div>';
 	} else {
@@ -865,7 +865,7 @@ function searchpage($d) {
 				}
 			if ($d["showNav"]) {
 				if (!$d["back"]) {
-					//Kein Zurück
+					//Kein ZurÃ¼ck
 					$back='
 					<td>
 						<span id="Cl1"></span>
@@ -879,7 +879,7 @@ function searchpage($d) {
 						</a>
 					</td>
 					';
-					//Zurück
+					//ZurÃ¼ck
 				}
 				
 				$toggle=0;
