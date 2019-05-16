@@ -1,250 +1,45 @@
-	<html>
-  $header='<div id="navbarmenu">
-					<div id="navbarmenuicon"></div>
-					<div id="navbarmenubutton">Sign In</div>
-				</div>';
-	
-	$active=array("","","","","","","","");
-	switch ($d["sub"]) {
-		case "/new":
-			$active[1]="active";
-			$sublink="&action=new";
-			break;
-		case "/rising":
-			$active[2]="active";
-			$sublink="&action=rising";
-			break;
-		case "/controversial":
-			$active[3]="active";
-			$sublink="&action=controversial";
-			break;
-		case "/top":
-			$active[4]="active";
-			$sublink="&action=top";
-			break;
-		case "/gilded":
-			$active[5]="active";
-			$sublink="&action=gilded";
-			break;
-		case "/promoted":
-			$active[6]="active";
-			$sublink="&action=promoted";
-			break;
-		case "/wiki":
-			$active[7]="active";
-			$sublink="&action=wiki";
-			break;
-		default:
-			$active[0]="active";
-			$sublink="&action=hot";
-			break;
-	}
-	
-	$sublink.=$proxyadd;
-	
-	echo '
-		<!DOCTYPE HTML>
-		<head>
-			<meta charset="utf-8">
-			<title>'.$d["query"].' - Cluffle Search</title>
-			<link rel="shortcut icon" href="gfx/faviconsmall.png" />
-			<style>';
-			require("css/searchpage.css");
-			echo '</style>
-			<script>';
-			require("js/jquery-2.1.1.min.js");
-			echo '</script>
-			<script>';
-			require("js/script.js");
-			echo '</script>
-			<style>
-				body {
-					background-color:white;
-					padding:0;
-					margin:0;
-					padding-top:172px;
-					min-width:980px;
-				}
-			</style>
-		</head>
-		<body>
-			<div id="navbar">
-				<a href="index.php">
-					<img id="logo" src="gfx/logo.png"></img>
-				</a>
-				<form>
-					<input type="text" id="searchbox" name="q" value="'.$d["query"].'" autocomplete=off>
-					'.$proxyform.'
-					<label for=searchsubmitbutton id="searchbutton">
-						<input id="searchsubmitbutton" type="submit" style="display:none;">
-					</label>
-				</form>
-				'.$header.'
-			</div>
-			<div id="navbar2">
-				<a href="index.php?q='.$d["query"].$proxyadd.'">
-					<div class="navbar2sub '.$active[0].'">
-						Hot
-					</div>
-				</a>
-				<a href="index.php?action=new&q='.$d["query"].$proxyadd.'">
-					<div class="navbar2sub '.$active[1].'">
-						New
-					</div>
-				</a>
-				<a href="index.php?action=rising&q='.$d["query"].$proxyadd.'">
-					<div class="navbar2sub '.$active[2].'">
-						Rising
-					</div>
-				</a>
-				<a href="index.php?action=controversial&q='.$d["query"].$proxyadd.'">
-					<div class="navbar2sub '.$active[3].'">
-						Controversial
-					</div>
-				</a>
-				<a href="index.php?action=top&q='.$d["query"].$proxyadd.'">
-					<div class="navbar2sub '.$active[4].'">
-						Top
-					</div>
-				</a>
-				<a href="index.php?action=gilded&q='.$d["query"].$proxyadd.'">
-					<div class="navbar2sub '.$active[5].'">
-						Gilded
-					</div>
-				</a>
-				<a href="index.php?action=promoted&q='.$d["query"].$proxyadd.'">
-					<div class="navbar2sub '.$active[6].'">
-						Promoted
-					</div>
-				</a>
-				<a href="index.php?action=wiki&q='.$d["query"].$proxyadd.'">
-					<div class="navbar2sub '.$active[7].'">
-						Wiki
-					</div>
-				</a>
-				<img id="cog" src="gfx/cog.png">
-			</div>
-			<div id="navbar3">
-				<div id="resultstats">
-					'.$d["resultstats"].'
+<html>
+$header='<div id="navbarmenu">
+				<div id="navbarmenuicon"></div>
+				<div id="navbarmenubutton">Sign In</div>
 				</div>
-			</div>
-			<div id="results">
-				';
-				if (empty($d["results"])) {
-					$d["results"]=page404();
-				}
-				
-				
-				foreach ($d["results"] as $r) {
-					if (isset($r["strOverwrite"])) {
-						$commentgreen='
-						<a href="'.htmlentities($r["strLink"]).'">'.($r["strTitel"]).'</a><br>
-						<a class="resultlink" href="#">'.$r["strOverwrite"].'</a>
-						';
-					} else {
-						if (isset($r["nsfw"]) && $r["nsfw"]) {
-							$nsfw="[NSFW] ";
-						} else {
-							$nsfw="";
-						}
-						$commentlink='index.php?action=groups&comment='.$r["strComment"];
-						$commentstring=$nsfw.$r["numComments"].' comments';
-						$commentgreen='
-						<a target="_blank" href="'.htmlentities($r["strLink"]).'">'.($r["strTitel"]).'</a><br>
-						<a class="resultlink" target=_blank href="'.$commentlink.'">'.$commentstring.'</a> 
-						<span class="resultlink">-</span> 
-						<a class="resultlink" target=_blank href="index.php?q='.$r["strDomain"].'">'.htmlentities($r["strDomain"]).'</a>
-						';
-					}
-					
-					
-					echo '
-						<div class="resultdiv">
-							'.$commentgreen.'
-							<br>
-							<span class="resulttext">
-								'.$r["strCreated"].str_replace("<a","<a target='_blank'",closetags($r["strBeschreibung"])).'
-							</span>
-						</div>
-					';
-				}
-			if ($d["showNav"]) {
-				if (!$d["back"]) {
-					//Kein Zurück
-					$back='
-					<td>
-						<span id="Cl1"></span>
-					</td>
-					';
-				} else {
-					$back='
-					<td>
-						<a href="'.$d["backlink"].$sublink.'">
-							<span id="Cl2"></span><span id="back">Previous</span>
-						</a>
-					</td>
-					';
-					//Zurück
-				}
-				
-				$toggle=0;
-				$pagenumbers="";
-				foreach ($d["pagelinks"] as $page) {
-					if ($toggle==0 && $page["current"]==1) {
-						$pagenumbers.='<td id="cur">
-									<span class="u"></span><span class="bottomnavtext">'.$page["number"].'</span>
-								</td>';
-						$toggle=1;
-					} else if ($toggle==0) {
-						$pagenumbers.='<td>
-									<a href="'.$page["link"].$sublink.'"><span class="u"></span><span class="bottomnavtext">'.$page["number"].'</span></a>
-								</td>';
-					} else {
-						$pagenumbers.='<td>
-									<a href="'.$page["link"].$sublink.'"><span class="u"></span><span class="bottomnavtext">'.$page["number"].'</span></a>
-								</td>';
-					}
-				}
-				
-				if ($d["forward"]) {
-					$next='<td>
-								<a href="'.$d["forwardlink"].$sublink.'"><span id="ffle"></span><span id="weiter" style="font-weight:700;">Next</span></a>
-							</td>
-							';
-				} else {
-					$next='<td>
-								<span id="ffle" style="cursor:default; width:62px;"></span>
-							</td>
-							';
-				}
-				
-				echo '
-				<div id="bottomnavwrapper">
-					<table id="bottomnav">
-						<tbody>
-							<tr valign=top>
-								'.$back.$pagenumbers.'
-								'.$next.'
-							</tr>
-						</tbody>
-					</table>
+				<div id="navbarlinks">
+					<a href="http://www.reddit.com/u/Lutan" target="_blank">+You</a>
+					<a href="nba.html">NBA Stream</a>
+					<a href="#">Images</a>
 				</div>';
-			} else {
-				echo '
-				<div id="bottomnavwrapper">
-				</div>';
-			}
-				echo '
-			</div>
-			<div id="footer">
-				<a div="opensource" style="margin-left:135px;">Help</a>
-				<a div="opensource">Open Source</a>
-				<a div="about">About</a>
-				<a target=_blank href="http://www.reddit.com/user/Lutan">Contact</a>
-				'.$d["proxyquery"].'
-			</div>
-			<div id="help" class="popup" style="display:none;">
+	
+	echo '<!DOCTYPE HTML>
+<head>
+<meta charset="utf-8">
+<title>Cluffle</title>
+<link rel="shortcut icon" href="gfx/faviconsmall.png" />
+<style>';
+require("css/frontpage.css");
+echo '</style>
+<script>';
+require("js/jquery-2.1.1.min.js");
+echo '</script>
+<script>';
+require("js/script.js");
+echo '</script>
+<style>
+body {
+	position:absolute;
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+	background-color:white;
+	padding:0;
+	margin:0;
+	min-width:980px;
+}
+</style>
+</head>
+
+<body>
+<div id="help" class="popup" style="display:none;">
 	<h2>Help</h2>
 	<div class="closebutton">Close</div>
 	<p>
@@ -252,7 +47,7 @@
 	</p>
 </div>
 <div id="opensource" class="popup" style="display:none;">
-	<h2>Open Source</h2>
+	<h2>Open source</h2>
 	<div class="closebutton">Close</div>
 	<p>
 		The whole project is completely open source and available at <a href="http://www.github.com/Lutron/Cluffle">Github</a>.<br>
@@ -273,219 +68,35 @@
 	You want the usual Reddit interface while using the proxy? Just go to <a href="http://proxy.cluffle.com" target=_blank>proxy.cluffle.com</a>.
 	</p>
 </div>
-		</body>
-	';
-}
-    // close opened html tags
-    function closetags ($html) {
-        #put all opened tags into an array
-        preg_match_all ( "#<([a-z]+)( .*)?(?!/)>#iU", $html, $result );
-        $openedtags = $result[1];
-        #put all closed tags into an array
-        preg_match_all ( "#</([a-z]+)>#iU", $html, $result );
-        $closedtags = $result[1];
-        $len_opened = count ( $openedtags );
-        # all tags are closed
-        if( count ( $closedtags ) == $len_opened )
-        {
-        return $html;
-        }
-        $openedtags = array_reverse ( $openedtags );
-        # close tags
-        for( $i = 0; $i < $len_opened; $i++ )
-        {
-            if ( !in_array ( $openedtags[$i], $closedtags ) )
-            {
-            $html .= "</" . $openedtags[$i] . ">";
-            }
-            else
-            {
-            unset ( $closedtags[array_search ( $openedtags[$i], $closedtags)] );
-            }
-        }
-        return $html;
-    }
-    // close opened html tags
-	
-	
-function time_passed($timestamp){
-    //type cast, current time, difference in timestamps
-    $timestamp      = (int) $timestamp;
-    $current_time   = time();
-    $diff           = $current_time - $timestamp;
-   
-    //intervals in seconds
-    $intervals      = array (
-        'year' => 31556926, 'month' => 2629744, 'week' => 604800, 'day' => 86400, 'hour' => 3600, 'minute'=> 60
-    );
-   
-    //now we just find the difference
-    if ($diff == 0)
-    {
-        return 'just now';
-    }   
-    if ($diff < 60)
-    {
-        return $diff == 1 ? $diff . ' second ago' : $diff . ' seconds ago';
-    }       
-    if ($diff >= 60 && $diff < $intervals['hour'])
-    {
-        $diff = floor($diff/$intervals['minute']);
-        return $diff == 1 ? $diff . ' minute ago' : $diff . ' minutes ago';
-    }       
-    if ($diff >= $intervals['hour'] && $diff < $intervals['day'])
-    {
-        $diff = floor($diff/$intervals['hour']);
-        return $diff == 1 ? $diff . ' hour ago' : $diff . ' hours ago';
-    }   
-    if ($diff >= $intervals['day'] && $diff < $intervals['week'])
-    {
-        $diff = floor($diff/$intervals['day']);
-        return $diff == 1 ? $diff . ' day ago' : $diff . ' days ago';
-    }   
-    if ($diff >= $intervals['week'] && $diff < $intervals['month'])
-    {
-        $diff = floor($diff/$intervals['week']);
-        return $diff == 1 ? $diff . ' week ago' : $diff . ' weeks ago';
-    }   
-    if ($diff >= $intervals['month'] && $diff < $intervals['year'])
-    {
-        $diff = floor($diff/$intervals['month']);
-        return $diff == 1 ? $diff . ' month ago' : $diff . ' months ago';
-    }   
-    if ($diff >= $intervals['year'])
-    {
-        $diff = floor($diff/$intervals['year']);
-        return $diff == 1 ? $diff . ' year ago' : $diff . ' years ago';
-    }
-}
-/*	
-function loggedin() {
-	return isset($_SESSION["active"]) && $_SESSION["active"];
-}
-function login() {
-	global $useragent;
-	if (loggedin()) {
-		header("Location: index.php");
-		die();
-	}
-	$curl=curl_init();
-	
-	//LOGIN AND SHIT
-	$param=array(
-		"api_type" => "json",
-		"user" => $_REQUEST["username"],
-		"passwd" => $_REQUEST["password"],
-		"rem" => true
-	);
-	curl_setopt_array($curl, array(
-		CURLOPT_RETURNTRANSFER => 1,
-		CURLOPT_URL => "www.reddit.com/api/login",
-		CURLOPT_USERAGENT => $useragent,
-		CURLOPT_POST => 1,
-		CURLOPT_POSTFIELDS => http_build_query($param)
-	));
-	$request=curl_exec($curl);
-	$data=json_decode($request);
-	if (isset($data->json->errors[0])) {
-		header("Location: index.php");
-		die();
-	}
-	// END OF LOGIN
-	
-	// SUBSCRIBED SUBREDDITS
-	$param=array(
-		"api_type" => "json",
-		"user" => $_REQUEST["username"],
-		"passwd" => $_REQUEST["password"],
-		"rem" => true
-	);
-	curl_setopt_array($curl, array(	
-			CURLOPT_POST => 0,
-			CURLOPT_RETURNTRANSFER => 1,
-			CURLOPT_URL => "http://www.reddit.com/subreddits/mine/subscriber.json",
-			CURLOPT_USERAGENT => $useragent,
-			CURLOPT_HTTPHEADER => array("X-Modhash" => $data->json->data->modhash),
-			CURLOPT_COOKIE => "reddit_session=".$data->json->data->cookie
-		));
-	$request=curl_exec($curl);
-	$data=json_decode($request);
-	if (isset($data->json->errors[0])) {
-		header("Location: index.php");
-		die();
-	}
-	// END OF SUBSCRIBED SUBREDDITS
-	
-	$subscribed=array();
-	foreach ($data->data->children as $child) {
-		$buffer=array();
-		$buffer["name"]=$child->data->display_name;
-		$buffer["url"]=$child->data->url;
-		$subscribed[]=$buffer;
-	}
-	
-	$_SESSION["active"]=true;
-	$_SESSION["subscribed"]=$subscribed;
-	$_SESSION["username"]=$_REQUEST["username"];
-	$_SESSION["modhash"]=$data->json->data->modhash;
-	$_SESSION["cookie"]=$data->json->data->cookie;
-	header("Location: index.php");
-	die();
-}
-*/
-function page404() {
-	$buffer=array();
-	$return=array();
-	
-	$buffer["strLink"]="#";
-	$buffer["strTitel"]="I want to be the very best - like no one ever was.";
-	$buffer["strOverwrite"]="Basically what I want to tell you is: 404.";
-	$buffer["strCreated"]="0 fucks left - ";
-	$buffer["strBeschreibung"]="Herp derpsum derpus pee ter herderder. Pee derps sherper herderder, merp herpy herp derpus. Sherpus terpus pee berp derperker derpy tee herderder. Herderder merp, serp merpus herpem sherpus. Me le derp perp derps derperker ";
-	$return[]=$buffer;
-	$buffer["strLink"]="#";
-	$buffer["strTitel"]="To find them is my real test, to fix them is my cause.";
-	$buffer["strOverwrite"]="Either this category doesn't exist on this sub or you suck at searching.";
-	$buffer["strCreated"]="0 fucks left - ";
-	$buffer["strBeschreibung"]="Herp derpsum derpus pee ter herderder. Pee derps sherper herderder, merp herpy herp derpus. Sherpus ";
-	$return[]=$buffer;
-	$buffer["strLink"]="#";
-	$buffer["strTitel"]="I will travel across the code, searchin' far and wide.";
-	$buffer["strOverwrite"]="The thing is, I still have to fill this page to make it look like Google.";
-	$buffer["strCreated"]="0 fucks left - ";
-	$buffer["strBeschreibung"]="Herp derpsum derpus pee ter herderder. Pee derps sherper herderder, merp herpy herp derpus. Sherpus terpus pee berp derperker derpy tee herderder. H";
-	$return[]=$buffer;
-	$buffer["strLink"]="#";
-	$buffer["strTitel"]="Each syntax to understand the error that's inside!";
-	$buffer["strOverwrite"]="And I'm running out of text.";
-	$buffer["strCreated"]="0 fucks left - ";
-	$buffer["strBeschreibung"]="Herp derpsum derpus pee ter herderder. Pee derps sherper herderder, merp herpy herp derpus. Sherpus terpus pee berp derperker";
-	$return[]=$buffer;
-	$buffer["strLink"]="#";
-	$buffer["strTitel"]="Errorlog! It's you and me. I know it's my destiny!";
-	$buffer["strOverwrite"]='Fun fact: Cluffle is defined as a complete waste of time.';
-	$buffer["strCreated"]="0 fucks left - ";
-	$buffer["strBeschreibung"]="Herp derpsum derpus pee ter herderder. Pee derps sherper herderder, merp herpy herp derpus. Sherpus terpus pee berp derperker derpy tee herderder. Herderder merp, serp merpus herpem sherpus. Me le derp perp derps derperker ";
-	$return[]=$buffer;
-	$buffer["strLink"]="#";
-	$buffer["strTitel"]="Errorlog! Ooh you're my best friend on a page we must defend!";
-	$buffer["strOverwrite"]="Wasting time is the whole purpose of this page.";
-	$buffer["strCreated"]="0 fucks left - ";
-	$buffer["strBeschreibung"]="Herp derpsum derpus pee ter herderder. Pee derps sherper herderder, merp herpy herp";
-	$return[]=$buffer;
-	$buffer["strLink"]="#";
-	$buffer["strTitel"]="Errorlog! A heart so true. Our courage will pull us through.";
-	$buffer["strOverwrite"]="Wasting time while at work or school. Awesome.";
-	$buffer["strCreated"]="0 fucks left - ";
-	$buffer["strBeschreibung"]="Herp derpsum derpus pee ter herderder. Pee derps sherper herderder, merp herpy herp derpus. Sherpus terpus pee berp derperker derpy tee herderder. Herderder merp, serp merpus herpem she";
-	$return[]=$buffer;
-	$buffer["strLink"]="#";
-	$buffer["strTitel"]="You teach me and I'll teach you. Errorlog! Gotta fix 'em all!";
-	$buffer["strOverwrite"]="Trouble with filters? Use the proxy feature on the bottom.";
-	$buffer["strCreated"]="0 fucks left - ";
-	$buffer["strBeschreibung"]="Herp derpsum derpus pee ter herderder. Pee derps sherper herderder, merp herpy herp derpus. Sherpus terpus pee berp d";
-	$return[]=$buffer;
-	return $return;
-}
-?> 
+<div class="noselect" id="navbar">
+	'.$header.'
+</div>
+<div id="content">
+	<div id="contentlogo">
+	</div>
+	<form action="index.php">
+		<input type="hidden" name="enableproxy" value="true">
+		<input type="text" id="contentinput" autofocus name="q" autocomplete="off">
+		<div class="noselect" id="contentbuttons">
+			<button type=submit id="contentbutton1"></button>
+			<a id="contentbutton2" href="index.php?q=/r/random&enableproxy=true"></a>
+		</div>
+	</form>
+</div>
+<div class="noselect" id="footer">
+	<a div="opensource">Help</a>
+	<a div="opensource">Open Source</a>
+	<a div="about">About</a>
+
+	<span id="footerright">
+		<a class="pullright" href="http://www.reddit.com/u/Lutan" target="_blank">Contact</a>
+		<a class="pullright" href="http://proxy.cluffle.com" target=_blank>Proxypage</a>
+	</span>
+</div>
+</body>';
+}	
+		
+		
+
+
 </html>
