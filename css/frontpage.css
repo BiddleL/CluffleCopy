@@ -254,7 +254,7 @@ body {
     font-size: 16px;
     left: calc(50% - 286px);
     border: 1px solid #d4d4d4;
-    top: 118px;
+    top: 210px;
 }
 #contentinput:focus {
     border: 1px solid #4285f4;
@@ -263,7 +263,7 @@ body {
     position: absolute;
     width: 250px;
     height: auto;
-    top: 164px;
+    top: 260px;
     color: #404040;
     left: calc(50% - 125px);
 }
