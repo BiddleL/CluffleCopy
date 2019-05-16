@@ -160,17 +160,7 @@ body {
 <div class="noselect" id="navbar">
 	'.$header.'
 </div>
-<div id="content">
-	<div id="contentlogo">
-	</div>
-	<form action="nba.php">
-		<input type="hidden" name="enableproxy" value="true">
-		<input type="text" id="contentinput" autofocus name="q" autocomplete="off">
-		<div class="noselect" id="contentbuttons">
-			<button type=submit id="contentbutton1"></button>
-			<a id="contentbutton2" href="nba.php?q=/r/random&enableproxy=true"></a>
-		</div>
-	</form>
+
 </div>
 <div class="noselect" id="footer">
 	<a div="opensource">Help</a>
