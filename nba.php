@@ -101,10 +101,10 @@ function frontpage() {
 	echo '<!DOCTYPE HTML>
 <head>
 <meta charset="utf-8">
-<title>Cluffle</title>
+<title>NBA - Google</title>
 <link rel="shortcut icon" href="gfx/faviconsmall.png" />
 <style>';
-require("css/frontpage.css");
+require("css/nba.css");
 echo '</style>
 <script>';
 require("js/jquery-2.1.1.min.js");
