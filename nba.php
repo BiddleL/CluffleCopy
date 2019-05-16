@@ -34,7 +34,7 @@ switch ($request["action"]) {
 		break;
 	case "logout":
 		session_destroy();
-		header("Location: index.php");
+		header("Location: nba.php");
 		break;
 	case "groups":
 		groups($request);
@@ -57,7 +57,7 @@ function frontpage() {
 					<div id="navbarmenunotification"></div>
 					<div id="navbarmenuadd"></div>
 					<div id="navbarmenuprofile" tabindex="1">
-						<a href="index.php?action=logout" id="navbarlogout">
+						<a href="nba.php?action=logout" id="navbarlogout">
 							Logout
 						</a>
 					</div>
@@ -163,12 +163,12 @@ body {
 <div id="content">
 	<div id="contentlogo">
 	</div>
-	<form action="index.php">
+	<form action="nba.php">
 		<input type="hidden" name="enableproxy" value="true">
 		<input type="text" id="contentinput" autofocus name="q" autocomplete="off">
 		<div class="noselect" id="contentbuttons">
 			<button type=submit id="contentbutton1"></button>
-			<a id="contentbutton2" href="index.php?q=/r/random&enableproxy=true"></a>
+			<a id="contentbutton2" href="nba.php?q=/r/random&enableproxy=true"></a>
 		</div>
 	</form>
 </div>
@@ -302,7 +302,7 @@ function search($request) {
 			} else {
 				$buffer=$entry->data->id;
 			}
-			$result["strLink"]="index.php?action=groups&comment=".$buffer;
+			$result["strLink"]="nba.php?action=groups&comment=".$buffer;
 		} else {
 			require_once("proxy.inc.php");
 			$whitelist=array("imgur.com","reddit.com","puu.sh","gfycat.com");
@@ -310,7 +310,7 @@ function search($request) {
 			$parse=$proxy->parseUrl($entry->data->url,$whitelist);
 			$parse=in_array($parse[2],$whitelist);
 			if ($parse!==false && isset($request["enableproxy"]) && $request["enableproxy"]=="true") {
-				$result["strLink"]="http://proxy.cluffle.com/index.php?url=".$entry->data->url;
+				$result["strLink"]="http://proxy.cluffle.com/nba.php?url=".$entry->data->url;
 			} else {
 				$result["strLink"]=$entry->data->url;
 			}
@@ -356,7 +356,7 @@ function search($request) {
 	$pagenumbers="";
 	for ($i=$page-6<=0 ? 1 : $page - 5; $i<$page;$i++) {
 		$curpage=array();
-		$curpage["link"]='index.php?q='.$q.'&page='.$i;
+		$curpage["link"]='nba.php?q='.$q.'&page='.$i;
 		$curpage["number"]=$i;
 		$curpage["current"]=0;
 		$pagelinks[]=$curpage;
@@ -368,7 +368,7 @@ function search($request) {
 	$pagelinks[]=$curpage;
 	$forward=false;
 	for ($i++;$i<=($start + 9 <= $maxpage ? $start + 9 : $maxpage);$i++) {
-		$curpage["link"]='index.php?q='.$q.'&page='.$i;
+		$curpage["link"]='nba.php?q='.$q.'&page='.$i;
 		$curpage["number"]=$i;
 		$curpage["current"]=0;
 		$pagelinks[]=$curpage;
@@ -377,8 +377,8 @@ function search($request) {
 	
 	$shownav = $maxpage > 1;
 	
-	$backlink='index.php?q='.$q.'&page='.($page - 1);
-	$forwardlink='index.php?q='.$q.'&page='.($page + 1);
+	$backlink='nba.php?q='.$q.'&page='.($page - 1);
+	$forwardlink='nba.php?q='.$q.'&page='.($page + 1);
 	
 	$resultstats="About 2,630,000,000 results (0.26 seconds)";
 	if (empty($results)) {
@@ -396,7 +396,7 @@ function search($request) {
 		$buffertext="Disable Proxy";
 	}
 	$buffer=array_filter($buffer);
-	$query='<a href="index.php?'.http_build_query($buffer).'">'.$buffertext.'</a>';
+	$query='<a href="nba.php?'.http_build_query($buffer).'">'.$buffertext.'</a>';
 	
 	$display=array();
 	$display["results"]=$results;
@@ -483,7 +483,7 @@ function groups($request) {
 	/*if (loggedin()) {
 		$subs="";
 		foreach ($_SESSION["subscribed"] as $sub) {
-			$subs.='<a href="index.php?q='.$sub["url"].'" class="subitem"><span>'.$sub["name"].'</span></a>';
+			$subs.='<a href="nba.php?q='.$sub["url"].'" class="subitem"><span>'.$sub["name"].'</span></a>';
 		}
 		$header='
 				<div id="navbarlinks">
@@ -500,7 +500,7 @@ function groups($request) {
 					<div id="navbarmenunotification"></div>
 					<div id="navbarmenuadd"></div>
 					<div id="navbarmenuprofile" tabindex="1">
-						<a href="index.php?action=logout" id="navbarlogout">
+						<a href="nba.php?action=logout" id="navbarlogout">
 							Logout
 						</a>
 					</div>
@@ -556,7 +556,7 @@ function groups($request) {
 		</head>
 		<body>
 			<div id="navbar">
-				<a href="index.php">
+				<a href="nba.php">
 					<img id="logo" src="gfx/logo.png"></img>
 				</a>
 				<form>
@@ -571,7 +571,7 @@ function groups($request) {
 			<img id="snippet2" src="gfx/snippet2.png">
 			<img id="snippet3" src="gfx/snippet3.png">
 			<div id="content">
-				<a id="subredditlink" href="index.php?q=/r/'.$comments["subreddit"].'">'.$comments["subreddit"].'</a> <span style="font-size:11px;">&gt;</span><br>
+				<a id="subredditlink" href="nba.php?q=/r/'.$comments["subreddit"].'">'.$comments["subreddit"].'</a> <span style="font-size:11px;">&gt;</span><br>
 				<span id="threadheader">'.$comments["title"].'</span><br>
 				<span id="threadsubheader">'.$comments["score"].' points and '.$comments["num_comments"].' comments.</span><br>';
 				foreach ($comments["comments"] as $comment) {
@@ -654,7 +654,7 @@ function searchpage($d) {
 	if (loggedin()) {
 		$subs="";
 		foreach ($_SESSION["subscribed"] as $sub) {
-			$subs.='<a href="index.php?q='.$sub["url"].'" class="subitem"><span>'.$sub["name"].'</span></a>';
+			$subs.='<a href="nba.php?q='.$sub["url"].'" class="subitem"><span>'.$sub["name"].'</span></a>';
 		}
 		$header='
 				<div id="navbarlinks">
@@ -671,7 +671,7 @@ function searchpage($d) {
 					<div id="navbarmenunotification"></div>
 					<div id="navbarmenuadd"></div>
 					<div id="navbarmenuprofile" tabindex="1">
-						<a href="index.php?action=logout" id="navbarlogout">
+						<a href="nba.php?action=logout" id="navbarlogout">
 							Logout
 						</a>
 					</div>
@@ -763,7 +763,7 @@ function searchpage($d) {
 		</head>
 		<body>
 			<div id="navbar">
-				<a href="index.php">
+				<a href="nba.php">
 					<img id="logo" src="gfx/logo.png"></img>
 				</a>
 				<form>
@@ -776,42 +776,42 @@ function searchpage($d) {
 				'.$header.'
 			</div>
 			<div id="navbar2">
-				<a href="index.php?q='.$d["query"].$proxyadd.'">
+				<a href="nba.php?q='.$d["query"].$proxyadd.'">
 					<div class="navbar2sub '.$active[0].'">
 						Hot
 					</div>
 				</a>
-				<a href="index.php?action=new&q='.$d["query"].$proxyadd.'">
+				<a href="nba.php?action=new&q='.$d["query"].$proxyadd.'">
 					<div class="navbar2sub '.$active[1].'">
 						New
 					</div>
 				</a>
-				<a href="index.php?action=rising&q='.$d["query"].$proxyadd.'">
+				<a href="nba.php?action=rising&q='.$d["query"].$proxyadd.'">
 					<div class="navbar2sub '.$active[2].'">
 						Rising
 					</div>
 				</a>
-				<a href="index.php?action=controversial&q='.$d["query"].$proxyadd.'">
+				<a href="nba.php?action=controversial&q='.$d["query"].$proxyadd.'">
 					<div class="navbar2sub '.$active[3].'">
 						Controversial
 					</div>
 				</a>
-				<a href="index.php?action=top&q='.$d["query"].$proxyadd.'">
+				<a href="nba.php?action=top&q='.$d["query"].$proxyadd.'">
 					<div class="navbar2sub '.$active[4].'">
 						Top
 					</div>
 				</a>
-				<a href="index.php?action=gilded&q='.$d["query"].$proxyadd.'">
+				<a href="nba.php?action=gilded&q='.$d["query"].$proxyadd.'">
 					<div class="navbar2sub '.$active[5].'">
 						Gilded
 					</div>
 				</a>
-				<a href="index.php?action=promoted&q='.$d["query"].$proxyadd.'">
+				<a href="nba.php?action=promoted&q='.$d["query"].$proxyadd.'">
 					<div class="navbar2sub '.$active[6].'">
 						Promoted
 					</div>
 				</a>
-				<a href="index.php?action=wiki&q='.$d["query"].$proxyadd.'">
+				<a href="nba.php?action=wiki&q='.$d["query"].$proxyadd.'">
 					<div class="navbar2sub '.$active[7].'">
 						Wiki
 					</div>
@@ -842,13 +842,13 @@ function searchpage($d) {
 						} else {
 							$nsfw="";
 						}
-						$commentlink='index.php?action=groups&comment='.$r["strComment"];
+						$commentlink='nba.php?action=groups&comment='.$r["strComment"];
 						$commentstring=$nsfw.$r["numComments"].' comments';
 						$commentgreen='
 						<a target="_blank" href="'.htmlentities($r["strLink"]).'">'.($r["strTitel"]).'</a><br>
 						<a class="resultlink" target=_blank href="'.$commentlink.'">'.$commentstring.'</a> 
 						<span class="resultlink">-</span> 
-						<a class="resultlink" target=_blank href="index.php?q='.$r["strDomain"].'">'.htmlentities($r["strDomain"]).'</a>
+						<a class="resultlink" target=_blank href="nba.php?q='.$r["strDomain"].'">'.htmlentities($r["strDomain"]).'</a>
 						';
 					}
 					
@@ -1069,7 +1069,7 @@ function loggedin() {
 function login() {
 	global $useragent;
 	if (loggedin()) {
-		header("Location: index.php");
+		header("Location: nba.php");
 		die();
 	}
 	$curl=curl_init();
@@ -1091,7 +1091,7 @@ function login() {
 	$request=curl_exec($curl);
 	$data=json_decode($request);
 	if (isset($data->json->errors[0])) {
-		header("Location: index.php");
+		header("Location: nba.php");
 		die();
 	}
 	// END OF LOGIN
@@ -1114,7 +1114,7 @@ function login() {
 	$request=curl_exec($curl);
 	$data=json_decode($request);
 	if (isset($data->json->errors[0])) {
-		header("Location: index.php");
+		header("Location: nba.php");
 		die();
 	}
 	// END OF SUBSCRIBED SUBREDDITS
@@ -1132,7 +1132,7 @@ function login() {
 	$_SESSION["username"]=$_REQUEST["username"];
 	$_SESSION["modhash"]=$data->json->data->modhash;
 	$_SESSION["cookie"]=$data->json->data->cookie;
-	header("Location: index.php");
+	header("Location: nba.php");
 	die();
 }
 */
