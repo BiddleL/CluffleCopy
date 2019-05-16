@@ -239,8 +239,8 @@ body {
     background-image: url(gfx/logo.png);
     background-size: 100% 100%;
     margin-left: calc(50% - 134px);
-    width: 269px;
-    height: 95px;
+    width: 538px;
+    height: 190px;
 }
 #contentinput {
     position: absolute;
